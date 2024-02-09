@@ -1,10 +1,7 @@
-import * as React from 'react';
+// import * as React from 'react';
 import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
@@ -25,7 +22,6 @@ const style = {
 export default function BasicModal({ modalState, handleModalState, editableProduct ,handleEdit}) {
   const [open, setOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState({})
-  const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false)
     handleModalState(false)

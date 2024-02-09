@@ -8,8 +8,9 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import CategoryIcon from '@mui/icons-material/Category';
+import LogoutIcon from '@mui/icons-material/Logout';
 
-import axios from 'axios';
+// import axios from 'axios';
 
 import Switch from '@mui/material/Switch';
 import BasicModal from './modal';
@@ -18,7 +19,6 @@ const label = { inputProps: { 'aria-label': 'Switch demo' } };
 function App() {
   const [data, setData] = useState([{ "name": "Bluetooth", "category": "Electronic", "value": "black", "quantity": 5, "price": "$30" }, { "name": "Edifier M43560", "category": "Electronic", "value": "black", "quantity": 0, "price": "$0" }, { "name": "Sony 4k ultra 55 inch TV", "category": "Electronic", "value": "black", "quantity": 17, "price": "$70" }, { "name": "Samsumg 55 inch TV", "category": "Electronic", "value": "black", "quantity": 50, "price": "$12" }, { "name": "samsumg S34 Ultra", "category": "phone", "value": "black", "quantity": 0, "price": "$0" }])
   const [checked, setChecked] = useState(false)
-  const [isloading, setIsloading] = useState(true)
   const [openModal, setOpenModal] = useState(false)
   const [editableProduct, setEditableProduct] = useState({})
   const [disabledProducts, setDisabledProducts] = useState([])
@@ -72,27 +72,26 @@ function App() {
 
   const handleEdit = (oldItem, newItem) => {
 
-    let updateData = data.map((item, index) => {
+    let updateData = data.map((item) => {
       if (item.category == oldItem.category && item.price == oldItem.price && item.quantity == oldItem.quantity && item.value == oldItem.value) {
         return newItem
       } else {
         return item;
       }
     })
-
     setData([...updateData])
-    //edit the existing product data
+
   }
 
-  const getData = async () => {
-    await axios.get('https://dev-0tf0hinghgjl39z.api.raw-labs.com/inventory')
-      .then((res) => {
-        setData(res.data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
+  // const getData = async () => {
+  //   await axios.get('https://dev-0tf0hinghgjl39z.api.raw-labs.com/inventory')
+  //     .then((res) => {
+  //       setData(res.data)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  // }
 
   const handleOverAllStoreData = () => {
     let arr = [...data,...disabledProducts]
@@ -138,10 +137,11 @@ function App() {
             <Switch {...label} onChange={handleChange} size="small" color="warning" />
             <div>user</div>
           </div>
-          <div style={{ marginRight: 10 }}>
-            <i class="fa fa-sign-out" aria-hidden="true"></i>
+          <div style={{ marginRight: 10,display:"flex",alignItems:"center",justifyContent:"center" }}>
+            <LogoutIcon/>
           </div>
         </div>
+
         <div style={{ marginLeft: 10, marginRight: 10 }}>
           <div style={{ height: '160px', padding: 0 }}>
             <div style={{ padding: 0, height: '20%' }}><h2 style={{ margin: 0, marginBottom: 10 }}>Inventory stats</h2></div>
@@ -238,7 +238,7 @@ function App() {
 
             {
               data.map((item, index) => {
-                return <div style={{ display: "flex", flexDirection: "row", borderBottom: data.length - 1 == index ? "" : "1px solid #636363", height: 60 }}>
+                return <div key={'enabledProducts'+index} style={{ display: "flex", flexDirection: "row", borderBottom: data.length - 1 == index ? "" : "1px solid #636363", height: 60 }}>
                   <div style={{ width: "25%", display: "flex", alignItems: "center", paddingLeft: 10 }}>
                     <span style={{ padding: '3px 10px' }}>{item.name}</span>
                   </div>
@@ -315,7 +315,7 @@ function App() {
 
             {
               disabledProducts.map((item, index) => {
-                return <div style={{ display: "flex", flexDirection: "row", borderBottom: disabledProducts.length - 1 == index ? "" : "1px solid #636363", height: 60 }}>
+                return <div key={"disabledProduct"+index} style={{ display: "flex", flexDirection: "row", borderBottom: disabledProducts.length - 1 == index ? "" : "1px solid #636363", height: 60 }}>
                   <div style={{ width: "25%", display: "flex", alignItems: "center", paddingLeft: 10 }}>
                     <span style={{ padding: '3px 10px' }}>{item.name}</span>
                   </div>
@@ -361,6 +361,8 @@ function App() {
           </div>}
 
         </div>
+
+        
         <BasicModal modalState={openModal} handleModalState={handleModalState} editableProduct={editableProduct} handleEdit={handleEdit} />
       </div>
     </>
